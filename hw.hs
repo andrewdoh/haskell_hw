@@ -2,13 +2,11 @@
 
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev n | n == 0 = []
-              | n < 1 = []
+toDigitsRev n | n <= 1 = []
               | otherwise = n `mod` 10 : toDigitsRev (n `div` 10)
 
 toDigits :: Integer -> [Integer]
-toDigits n | n == 0 = []
-           | n < 1 = []
+toDigits n | n <= 1 = []
            | otherwise = n `div` (10 ^ (numOfDigits $ n)) : toDigits (n `mod` (10 ^(numOfDigits $ n)))
 
 
@@ -34,7 +32,7 @@ sumDigits [] = 0
 sumDigits (x:xs) = if x `div` 10 == 1 then (x `div` 10 + x `mod` 10) + sumDigits xs else x + sumDigits xs
 
 validate :: Integer -> Bool
-validate n = if mod (sumDigits $ doubleEveryOther $ toDigits n) 10 == 0 then True else False
+validate n = mod (sumDigits $ doubleEveryOther $ toDigits n) 10 == 0
 
 type Peg = String
 type Move = (Peg, Peg)
