@@ -17,8 +17,8 @@ f a b = case b of
 	        (Node i l m Leaf) -> (Node i l m (Node (i+1) Leaf a Leaf))
 		(Node i Leaf m r) -> (Node i (Node (i+1) Leaf a Leaf) m r)
 		(Node i l m r) -> if hl <= hr then (Node i (f a l) m r) else (Node i l m (f a r))
-		                       where hl = height l
-				             hr = height r
+		                       where hl = maximum $ height l
+				             hr = maximum $ height r
 					     
 height :: Tree a -> [Integer]
 height t = case t of
