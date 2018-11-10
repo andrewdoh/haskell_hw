@@ -29,8 +29,9 @@ xor :: [Bool] -> Bool
 xor xs = foldr (\x y -> x /= y) False xs
 
 
--- mapP :: (a -> b) -> [a] -> [b]
--- mapP fa xs = foldr fa [] xs
+map' :: (a -> b) -> [a] -> [b]
+map' f xs = foldr (\x y -> f x:y) [] xs
+
 
 cartProd :: [a] -> [b] -> [(a,b)]
 cartProd xs ys = [(x,y) | x <- xs, y <-ys]
@@ -40,3 +41,5 @@ cList n = [1..(2*n+2)]
 
 --sieveSundaram :: Integer -> [Integer]
 --sieveSundaram = filter(\x ->) cartProd [1..10] . cList
+
+
