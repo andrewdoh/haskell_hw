@@ -30,7 +30,7 @@ xor xs = foldr (\x y -> x /= y) False xs
 
 
 map' :: (a -> b) -> [a] -> [b]
-map' f xs = foldr (\x y -> f x:y) [] xs
+map' f = foldr (\x y -> f x:y) []
 
 
 cartProd :: [a] -> [b] -> [(a,b)]
