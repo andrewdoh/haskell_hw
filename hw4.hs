@@ -26,7 +26,7 @@ height t = case t of
 		  (Node i l _ r) -> i:(height l)++(height r)
 		  
 xor :: [Bool] -> Bool
-xor xs = foldr (\x y -> x /= y) False xs
+xor = foldr (\x y -> x /= y) False
 
 
 map' :: (a -> b) -> [a] -> [b]
