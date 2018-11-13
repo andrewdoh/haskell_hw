@@ -1,3 +1,5 @@
+import Data.List
+
 data Tree a = Leaf
             | Node Integer (Tree a) a (Tree a) deriving (Show, Eq)
 
@@ -34,12 +36,10 @@ map' f = foldr (\x y -> f x:y) []
 
 
 cartProd :: [a] -> [b] -> [(a,b)]
-cartProd xs ys = [(x,y) | x <- xs, y <-ys]
+cartProd xs ys = [(x,y) | x <- xs, y <-ys, y >= x]
 
-cList :: Integer -> [Integer]
-cList n = [1..(2*n+2)]
 
---sieveSundaram :: Integer -> [Integer]
---sieveSundaram = filter(\x ->) cartProd [1..10] . cList
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram = map (\x->2*x+1) . (\\) [1..100] . filter (<=100) . map (\x -> fst x + snd x + 2 * fst x * snd x) . cartProd [1..100] . (\x -> [1..x])
 
 
