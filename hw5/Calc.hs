@@ -14,4 +14,4 @@ evalStr :: String -> Maybe Integer
 evalStr s = case t of
                    Just e  -> Just $ eval e
                    Nothing -> Nothing
-                   where t = parseExp s
+                   where t = parseExp Lit Add Mul s
