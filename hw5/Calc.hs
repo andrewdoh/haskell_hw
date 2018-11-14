@@ -15,3 +15,24 @@ evalStr s = case t of
                    Just e  -> Just $ eval e
                    Nothing -> Nothing
                    where t = parseExp Lit Add Mul s
+
+class Expr a where
+  lit :: Integer -> a
+--  add :: a -> a -> b
+--  mul :: a -> a -> b
+
+instance Expr ExprT where
+  lit i = Lit i
+--  add a b = case a of
+    --              (Add l r)  -> add l + add r
+      --            _          -> a
+
+  --mul a b = case a of
+        --          (Mul l r) -> mul l * mul r
+          --        Lit i       -> i
+                  
+                  
+                 
+  
+
+  
