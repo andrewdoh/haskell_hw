@@ -18,21 +18,17 @@ evalStr s = case t of
 
 class Expr a where
   lit :: Integer -> a
---  add :: a -> a -> b
---  mul :: a -> a -> b
+  add :: a -> a -> a
+  mul :: a -> a -> a
 
 instance Expr ExprT where
   lit i = Lit i
---  add a b = case a of
-    --              (Add l r)  -> add l + add r
-      --            _          -> a
+  add x y = Add x y
+  mul x y = Mul x y
+ 
+reify :: ExprT -> ExprT
+reify = id
 
-  --mul a b = case a of
-        --          (Mul l r) -> mul l * mul r
-          --        Lit i       -> i
-                  
-                  
-                 
-  
 
-  
+
+
