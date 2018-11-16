@@ -29,6 +29,37 @@ instance Expr ExprT where
 reify :: ExprT -> ExprT
 reify = id
 
+instance Expr Integer where
+  lit i = i
+  add x y = x + y
+  mul x y = x * y
+
+instance Expr Bool where
+  lit i = i > 0
+  add x y = x || y
+  mul x y = x && y
+
+  
+newtype MinMax = MinMax Integer deriving (Eq, Show)
+newtype Mod7 = Mod7 Integer deriving (Eq, Show)
 
 
 
+instance Expr MinMax where
+  lit i = MinMax i
+  add (MinMax l)(MinMax r) = if l > r then MinMax l else MinMax r
+  mul (MinMax l)(MinMax r) = if l < r then MinMax l else MinMax r
+
+instance Expr Mod7 where
+  lit i = Mod7 i
+  add (Mod7 l)(Mod7 r) = Mod7 $ l + r `mod` 7
+  mul (Mod7 l)(Mod7 r) = Mod7 $ l * r `mod` 7
+
+
+testExp :: Expr a => Maybe a
+testExp = parseExp lit add mul "(3 * -4) + 5"
+
+testInteger = testExp :: Maybe Integer
+testBool    = testExp :: Maybe Bool
+testMM      = testExp :: Maybe MinMax
+testSat     = testExp :: Maybe Mod7
