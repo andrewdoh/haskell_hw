@@ -1,6 +1,8 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 import ExprT
 import Parser
-
+import qualified Data.Map as M
 
 
 
@@ -63,3 +65,20 @@ testInteger = testExp :: Maybe Integer
 testBool    = testExp :: Maybe Bool
 testMM      = testExp :: Maybe MinMax
 testSat     = testExp :: Maybe Mod7
+
+class HasVars a where
+  var :: String -> a
+
+data VarExprT = L Integer
+              | A VarExprT VarExprT
+              | M VarExprT VarExprT
+              | V String
+    deriving (Show, Eq)
+
+instance Expr VarExprT where
+  lit i = L i
+  add x y = A x y
+  mul x y = M x y
+  
+instance HasVars VarExprT where
+  var s =  V s
