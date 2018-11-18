@@ -73,7 +73,7 @@ data VarExprT = L Integer
               | A VarExprT VarExprT
               | M VarExprT VarExprT
               | V String
-    deriving (Show, Eq)
+              deriving (Show, Eq)
 
 instance Expr VarExprT where
   lit i = L i
@@ -81,4 +81,16 @@ instance Expr VarExprT where
   mul x y = M x y
   
 instance HasVars VarExprT where
-  var s =  V s
+  var s = V s
+
+instance HasVars (M.Map String Integer -> Maybe Integer) where
+  var s = M.lookup s 
+
+instance Expr (M.Map String Integer -> Maybe Integer) where
+  lit i = i
+  add x y = m + y
+  mul x y = x * y
+
+withVars :: [(String, Integer)] -> (M.Map String Integer -> Maybe Integer) -> Maybe Integer
+withVars vs exp = exp $ M.fromList vs
+
