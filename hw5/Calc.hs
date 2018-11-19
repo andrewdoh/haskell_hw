@@ -87,10 +87,12 @@ instance HasVars (M.Map String Integer -> Maybe Integer) where
   var s = M.lookup s 
 
 instance Expr (M.Map String Integer -> Maybe Integer) where
-  lit i = i
-  add x y = m + y
-  mul x y = x * y
+ lit i   = (\_-> Just i)
+ add (Just x)(Just y) = x
+ mul x y = y
+
 
 withVars :: [(String, Integer)] -> (M.Map String Integer -> Maybe Integer) -> Maybe Integer
 withVars vs exp = exp $ M.fromList vs
+
 
