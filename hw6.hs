@@ -9,8 +9,16 @@ fibs1 = map fib [0..]
 
 
 
-data Stream a = C a deriving Show
+data Stream a =  C a (Stream a) deriving Show
 
 streamToList :: Stream a -> [a]
-streamToList s = ?
+streamToList (C a b) = a : streamToList b
+
+
+streamRepeat :: a -> Stream a
+streamRepeat x = C x (streamRepeat x)
+
+--streamMap :: (a -> b) -> Stream a -> Stream b
+--streamMap f (C a b) = C $ (f a) streamMap b
+
 
