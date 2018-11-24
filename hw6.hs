@@ -18,18 +18,18 @@ instance Show a => Show (Stream a) where
 streamToList :: Stream a -> [a]
 streamToList (C a b) = a : streamToList b
 
-
 streamRepeat :: a -> Stream a
 streamRepeat x = C x (streamRepeat x)
 
 streamMap :: (a -> b) -> Stream a -> Stream b
-streamMap f (C a _ ) = C (f a) $ streamRepeat $ f a
+streamMap f (C a b) = C (f a) (streamMap f b)
 
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed f a = C a $ streamRepeat $ f a
+streamFromSeed f a = C a $ streamFromSeed f $ f a
 
 
---ts :: Stream Integer
+nats :: Stream Integer
+nats = streamFromSeed (+1) 0 
 
---ler :: Stream Integer
+--ruler :: Stream Integer
 
