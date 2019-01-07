@@ -18,9 +18,12 @@ tag jl = case jl of
            (Single m _ ) -> m
            (Append m _ _ ) -> m
 
-indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
-indexJ i jl = case jl of
-                 Empty -> Nothing
-
-
-
+indexJ i jl
+            | i >= getSize (tag jl) || i < 0 = Nothing
+            | otherwise            = case jl of
+                                         Empty -> Nothing
+                                         (Single m a) -> Just a
+                                         (Append _ l r) -> if i < lSize then indexJ i l else indexJ (i - lSize) r
+                                                                       where
+                                                                           lSize = getSize $ tag $ l
+                                                                           
