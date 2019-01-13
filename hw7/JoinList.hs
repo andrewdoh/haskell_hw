@@ -34,8 +34,16 @@ dropJ i jl
            | otherwise                      = case jl of
                                                 Empty -> Empty
                                                 (Single m _ ) -> Empty
-                                                (Append m l r) -> if i <= lSize then (Append m (dropJ i l) r) else (Append m Empty (dropJ (i - lSize) r))
-                                                                   where lSize = getSize $ size $ tag l
+                                                (Append m l r) -> if i <= lSize then left else right
+                                                                   where
+                                                                         lSize = getSize $ size $ tag l
                                                                          rSize = getSize $ size $ tag r
-                                                                         mSize = lSize - rSize
+                                                                         nm    = tag l <> tag r
+                                                                         left  = Append nm (dropJ i l) r
+                                                                         right = Append nm Empty (dropJ (i - lSize) r)
+
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+takeJ i jl = jl
+                                                                         
+
 
