@@ -30,9 +30,12 @@ indexJ i jl
 
 dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 dropJ i jl
-           | i >= (getSize (size $ tag jl)) || i < 0 = jl
+           | i > (getSize (size $ tag jl)) || i < 1 = jl
            | otherwise                      = case jl of
                                                 Empty -> Empty
-                                                (Single m a) -> Empty
-                                                (Append m l r) -> Append m Empty Empty
+                                                (Single m _ ) -> Empty
+                                                (Append m l r) -> if i <= lSize then (Append m (dropJ i l) r) else (Append m Empty (dropJ (i - lSize) r))
+                                                                   where lSize = getSize $ size $ tag l
+                                                                         rSize = getSize $ size $ tag r
+                                                                         mSize = lSize - rSize
 
