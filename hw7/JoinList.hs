@@ -18,12 +18,21 @@ tag jl = case jl of
            (Single m _ ) -> m
            (Append m _ _ ) -> m
 
+indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ i jl
-            | i >= getSize (tag jl) || i < 0 = Nothing
+            | i >= getSize (size $ tag jl) || i < 0 = Nothing
             | otherwise            = case jl of
                                          Empty -> Nothing
                                          (Single m a) -> Just a
                                          (Append _ l r) -> if i < lSize then indexJ i l else indexJ (i - lSize) r
                                                                        where
-                                                                           lSize = getSize $ tag $ l
-                                                                           
+                                                                           lSize = getSize $ size $ tag l
+
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ i jl
+           | i >= (getSize (size $ tag jl)) || i < 0 = jl
+           | otherwise                      = case jl of
+                                                Empty -> Empty
+                                                (Single m a) -> Empty
+                                                (Append m l r) -> Append m Empty Empty
+
