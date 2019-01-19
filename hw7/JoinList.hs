@@ -63,3 +63,6 @@ takeJ i jl
 
 
 
+scoreLine :: String -> JoinList Score String
+scoreLine s = (Single (stringScore) s)
+               where stringScore = scoreString s
