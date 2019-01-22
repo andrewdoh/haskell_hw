@@ -88,11 +88,23 @@ instance HasVars (M.Map String Integer -> Maybe Integer) where
 
 instance Expr (M.Map String Integer -> Maybe Integer) where
  lit i   = (\_-> Just i)
- add (Just x)(Just y) = x
- mul x y = y
+ add x y = \m -> case x m of
+                      Nothing     -> Nothing
+                      (Just xVal) -> case y m of
+                                         Nothing     -> Nothing
+                                         (Just yVal) -> Just(xVal + yVal)
+                                         
+
+                    
+ mul x y = \m -> case x m of
+                      Nothing     -> Nothing
+                      (Just xVal) -> case y m of
+                                          Nothing     -> Nothing
+                                          (Just yVal) -> Just(xVal * yVal)
 
 
 withVars :: [(String, Integer)] -> (M.Map String Integer -> Maybe Integer) -> Maybe Integer
 withVars vs exp = exp $ M.fromList vs
 
 
+ 
