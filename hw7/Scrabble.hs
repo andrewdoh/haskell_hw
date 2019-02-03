@@ -12,6 +12,18 @@ instance Semigroup Score where
 instance Monoid Score where
   mempty = Score 0
 
+class Scored a where
+  scored :: a -> Score
+
+instance Scored Score where
+  scored = id
+  
+instance Scored a => Scored (a, b) where
+  scored = scored . fst
+        
+getScore :: Score -> Int
+getScore (Score s) = s
+  
 score :: Char -> Score
 score c = case c of
              'a' -> Score 1
@@ -46,3 +58,4 @@ score c = case c of
 
 scoreString :: String -> Score
 scoreString = foldl (<>) (Score 0) . map score
+

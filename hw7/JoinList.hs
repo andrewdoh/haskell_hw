@@ -1,5 +1,9 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 import Sized
 import Scrabble
+import Buffer
+
 data JoinList m a = Empty
                   | Single m a
                   | Append m (JoinList m a) (JoinList m a)
@@ -66,3 +70,17 @@ takeJ i jl
 scoreLine :: String -> JoinList Score String
 scoreLine s = (Single (stringScore) s)
                where stringScore = scoreString s
+
+
+instance Buffer (JoinList (Score, Size) String) where
+  toString t = "1"
+
+  fromString s = (Single (Score 1, Size 1) "h")
+
+  line i = indexJ i 
+
+  replaceLine i s t = t
+
+  numLines t = getSize $ size $ tag t
+
+  value t    = getScore $ scored $ tag t
