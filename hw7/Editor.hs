@@ -114,7 +114,7 @@ doCommand (Load filename) = do
                  h <- openFile filename ReadMode
                  hSetEncoding h utf8
                  Just <$> hGetContents h
-  maybe (return ()) (modBuffer . const . fromString
+  maybe (return ()) (modBuffer . const . fromString) mstr
 
 doCommand (Line n) = modCurLine (const n) >> doCommand View
 

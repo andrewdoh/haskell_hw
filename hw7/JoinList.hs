@@ -1,5 +1,5 @@
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
+module JoinList where
 import Sized
 import Scrabble
 import Buffer
@@ -71,9 +71,15 @@ scoreLine :: String -> JoinList Score String
 scoreLine s = (Single (stringScore) s)
                where stringScore = scoreString s
 
+sToJl :: String -> JoinList (Score, Size) String
+sToJl s = Empty
 
 instance Buffer (JoinList (Score, Size) String) where
-  toString t = "1"
+  toString t = case t of
+                 Empty          -> ""
+                 (Single _ d)   -> d
+                 (Append _ l r) -> toString l ++ toString r
+
 
   fromString s = (Single (Score 1, Size 1) "h")
 
