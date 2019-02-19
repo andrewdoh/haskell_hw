@@ -26,3 +26,14 @@ treeFold :: (a -> [b] -> b) -> Tree a -> b
 treeFold f (Node r []) = f r []
 treeFold f (Node r funs) = f r $ map (treeFold f) funs
 
+nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
+nextLevel e gl = (withBoss, withoutBoss)
+  where
+    withBoss = mconcat $ map fst gl
+    withoutBoss = glCons e $ mconcat $ map snd gl
+  
+maxFun :: Tree Employee -> (GuestList, GuestList)
+maxFun = treeFold nextLevel
+
+main :: IO ()
+main = putStrLn "HELLO, HASKELL!" >> readFile "company.txt" >>= (\x -> putStrLn x)
