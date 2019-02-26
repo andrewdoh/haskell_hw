@@ -36,4 +36,5 @@ maxFun :: Tree Employee -> (GuestList, GuestList)
 maxFun = treeFold nextLevel
 
 main :: IO ()
-main = putStrLn "HELLO, HASKELL!" >> readFile "company.txt" >>= (\x -> putStrLn x)
+main = readFile "company.txt"
+       >>= (\x -> putStrLn $ (++) "total fun: " $ show $ getFun $ snd $ maxFun $ read x)
