@@ -3,6 +3,7 @@
 module Party where
 import Employee
 import Data.Tree(Tree(Node))
+import Data.List(sort)
 
 instance Semigroup GuestList where
   (<>) (GL la fa) (GL lb fb) = GL (la ++ lb) (fa + fb)
@@ -35,6 +36,12 @@ nextLevel e gl = (withBoss, withoutBoss)
 maxFun :: Tree Employee -> (GuestList, GuestList)
 maxFun = treeFold nextLevel
 
+getEmployees :: GuestList -> [Employee]
+getEmployees (GL es f) = es
+
+cte :: String -> GuestList
+cte = snd . maxFun . read 
 main :: IO ()
 main = readFile "company.txt"
-       >>= (\x -> putStrLn $ (++) "total fun: " $ show $ getFun $ snd $ maxFun $ read x)
+       >>= (\x -> putStrLn  $ (++) "total fun: " $ show $ getFun $ cte x) >>
+       readFile "company.txt">>= (\x -> mapM_ putStrLn $ map (\e -> empName e) $ getEmployees $ snd $ maxFun $ read x)
