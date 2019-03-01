@@ -18,10 +18,8 @@ glCons :: Employee -> GuestList -> GuestList
 glCons e (GL l f) = (GL (l ++ [e]) (f + (empFun e)))
 
 moreFun :: GuestList -> GuestList -> GuestList
-moreFun gla glb = if fa > fb then gla else glb
-                                           where
-                                             fa = getFun gla
-                                             fb = getFun glb
+moreFun = max
+                  
                                              
 treeFold :: (a -> [b] -> b) -> Tree a -> b
 treeFold f (Node r []) = f r []
@@ -33,15 +31,19 @@ nextLevel e gl = (withBoss, withoutBoss)
     withBoss = mconcat $ map fst gl
     withoutBoss = glCons e $ mconcat $ map snd gl
   
-maxFun :: Tree Employee -> (GuestList, GuestList)
-maxFun = treeFold nextLevel
+maxFun :: Tree Employee -> GuestList
+maxFun = uncurry moreFun . treeFold nextLevel
 
 getEmployees :: GuestList -> [Employee]
 getEmployees (GL es f) = es
 
 cte :: String -> GuestList
-cte = snd . maxFun . read 
+cte = maxFun . read
+
+msg :: GuestList -> String
+msg (GL es f) = "Total fun: " ++ show f ++ "\n" ++ employees
+                where employees = unlines $ sort $ map empName es
 main :: IO ()
-main = readFile "company.txt"
-       >>= (\x -> putStrLn  $ (++) "total fun: " $ show $ getFun $ cte x) >>
-       readFile "company.txt">>= (\x -> mapM_ putStrLn $ map (\e -> empName e) $ getEmployees $ snd $ maxFun $ read x)
+main = readFile "company.txt" >>= putStrLn . msg . cte
+
+
